@@ -56,7 +56,7 @@ describe('CODEBREAKER', function(){
     
 });
 
-describe('api: ',()=>{
+describe('api/codebreaker ',()=>{
 
 	it('todos iguales', (done) => {
 		chai.request(url)
@@ -157,6 +157,78 @@ describe('api: ',()=>{
         }); 
     });
 
+});
+
+
+describe('api/Secret', function(){
+
+    it('tamaño menor' , (done) => {
+        chai.request(url)
+        .get('/codebreaker/secret/231')
+        .end( function(err,res){
+            //console.log("res: "+res.body)
+            expect(res.body).to.have.property('resultado').to.be.equal("ingrese un numero de cuatro digitos");
+            expect(res).to.have.status(200);                
+            done();
+        });  
+    });
+     it('tamaño mayor' ,  (done) => {
+        chai.request(url)
+        .get('/codebreaker/secret/23145')
+        .end( function(err,res){
+            //console.log("res: "+res.body)
+            expect(res.body).to.have.property('resultado').to.be.equal("ingrese un numero de cuatro digitos");
+            expect(res).to.have.status(200);                
+            done();
+        });   
+    });
+
+    it('algun caracter no numerico' ,  (done) =>{
+        chai.request(url)
+        .get('/codebreaker/secret/2a14')
+        .end( function(err,res){
+            //console.log("res: "+res.body)
+            expect(res.body).to.have.property('resultado').to.be.equal("algun caracter no es un numero");
+            expect(res).to.have.status(200);                
+            done();
+        });   
+    });
+
+    it('algun caracter repetido' ,  (done) =>{
+        chai.request(url)
+        .get('/codebreaker/secret/1212')
+        .end( function(err,res){
+            //console.log("res: "+res.body)
+            expect(res.body).to.have.property('resultado').to.be.equal("no se aceptan numeros repetidos");
+            expect(res).to.have.status(200);                
+            done();
+        });   
+    }); 
+    
+});
+
+
+describe('Secret', function(){
+
+    it('tamaño menor' , function (){
+        let res = instanceCodeBreaker.setSecret("231");
+        assert.equal(res, "ingrese un numero de cuatro digitos"); 
+    });
+    it('tamaño mayor' , function (){
+        let res = instanceCodeBreaker.setSecret("23145");
+        assert.equal(res, "ingrese un numero de cuatro digitos"); 
+    });
+
+    it('algun caracter no numerico' , function (){
+        let res = instanceCodeBreaker.setSecret("2a14");
+        assert.equal(res, "algun caracter no es un numero"); 
+    });
+
+    it('algun caracter repetido' , function (){
+        let res = instanceCodeBreaker.setSecret("1212");
+        assert.equal(res, "no se aceptan numeros repetidos"); 
+    });
+    
 });
 
 

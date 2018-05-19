@@ -4,13 +4,41 @@ class CodeBreaker {
     this.secret = secret;
   }
 
+  validarRepetidos(number) {
+    let size = number.length
+    for(var i = 0; i <= size; i++) {
+        for(var j = i; j <= size; j++) {
+            if(i != j && number[i] == number[j]) {
+                return true;
+            }
+        }
+    }
+    return false;
+  }
+
+  setSecret(number){
+    let reg = new RegExp('^[0-9]*$');
+    if(!(number.length == 4)){
+        return "ingrese un numero de cuatro digitos";
+    }
+
+    if(!reg.test(number)) {
+        return "algun caracter no es un numero";
+    }
+
+    if(this.validarRepetidos(number)){
+        return "no se aceptan numeros repetidos";
+    }
+
+    this.secret = number;
+  }
+
   compare(number){
     let size = number.length
     let result = ""
     let equalDigits = 0;
     let containDigits = 0;
     var reg = new RegExp('^[0-9]*$');
-    let repetidos = false;
 
     if(!(this.secret.length == size)){
         return "ingrese un numero de cuatro digitos";
@@ -19,17 +47,9 @@ class CodeBreaker {
     if(!reg.test(number)) {
         return "algun caracter no es un numero";
     }
+    
 
-    let anterior = ""
-    for(var i = 0; i <= size; i++) {
-        for(var j = i; j <= size; j++) {
-            if(i != j && number[i] == number[j]) {
-                repetidos = true;
-            }
-        }
-    }
-
-    if(repetidos){
+    if(this.validarRepetidos(number)){
         return "no se aceptan numeros repetidos";
     }
 
