@@ -3,7 +3,7 @@ let chai = require('chai');
 let assert = require('chai').assert;
 const expect = require('chai').expect;
 let chaiHttp = require('chai-http');
-let app = require('./main').app;
+let app = require('./app');
 
 chai.use(chaiHttp);
 const url= 'http://localhost:5000/api/';
@@ -58,10 +58,9 @@ describe('CODEBREAKER', function(){
 });
 
 describe('api/codebreaker ',()=>{
-
 	it('todos iguales', (done) => {
-		chai.request(url)
-			.get('/codebreaker/1234')
+		chai.request(app)
+			.get('/api/codebreaker/1234')
 			.end( function(err,res){
 				//console.log("res: "+res.body)
                 expect(res.body).to.have.property('resultado').to.be.equal("xxxx");
@@ -70,9 +69,9 @@ describe('api/codebreaker ',()=>{
 			});
     });
     
-    it('todos distintos', (done) => {
-		chai.request(url)
-			.get('/codebreaker/5678')
+   it('todos distintos', (done) => {
+		chai.request(app)
+			.get('/api/codebreaker/5678')
 			.end( function(err,res){
 				//console.log("res: "+res.body)
                 expect(res.body).to.have.property('resultado').to.be.equal("");
@@ -82,8 +81,8 @@ describe('api/codebreaker ',()=>{
     });
     
     it('todos en desorden', (done) => {
-		chai.request(url)
-			.get('/codebreaker/2143')
+		chai.request(app)
+			.get('/api/codebreaker/2143')
 			.end( function(err,res){
 				//console.log("res: "+res.body)
                 expect(res.body).to.have.property('resultado').to.be.equal("____");
@@ -93,8 +92,8 @@ describe('api/codebreaker ',()=>{
     });
     
     it('dos iguales, dos en desorden', (done) => {
-		chai.request(url)
-			.get('/codebreaker/1243')
+		chai.request(app)
+			.get('/api/codebreaker/1243')
 			.end( function(err,res){
 				//console.log("res: "+res.body)
                 expect(res.body).to.have.property('resultado').to.be.equal("xx__");
@@ -104,8 +103,8 @@ describe('api/codebreaker ',()=>{
     });
     
     it('uno igual, tres en desorden', (done) => {
-		chai.request(url)
-			.get('/codebreaker/2314')
+		chai.request(app)
+			.get('/api/codebreaker/2314')
 			.end( function(err,res){
 				//console.log("res: "+res.body)
                 expect(res.body).to.have.property('resultado').to.be.equal("x___");
@@ -115,8 +114,8 @@ describe('api/codebreaker ',()=>{
     });
     
     it('tamaño menor' , (done) => {
-        chai.request(url)
-        .get('/codebreaker/231')
+        chai.request(app)
+        .get('/api/codebreaker/231')
         .end( function(err,res){
             //console.log("res: "+res.body)
             expect(res.body).to.have.property('resultado').to.be.equal("ingrese un numero de cuatro digitos");
@@ -126,8 +125,8 @@ describe('api/codebreaker ',()=>{
     });
 
     it('tamaño mayor' , (done) => {
-        chai.request(url)
-        .get('/codebreaker/23145')
+        chai.request(app)
+        .get('/api/codebreaker/23145')
         .end( function(err,res){
             //console.log("res: "+res.body)
             expect(res.body).to.have.property('resultado').to.be.equal("ingrese un numero de cuatro digitos");
@@ -137,8 +136,8 @@ describe('api/codebreaker ',()=>{
     });
 
     it('algun caracter no numerico' , (done) => {
-        chai.request(url)
-        .get('/codebreaker/2a14')
+        chai.request(app)
+        .get('/api/codebreaker/2a14')
         .end( function(err,res){
             //console.log("res: "+res.body)
             expect(res.body).to.have.property('resultado').to.be.equal("algun caracter no es un numero");
@@ -148,8 +147,8 @@ describe('api/codebreaker ',()=>{
     });
 
     it('algun caracter repetido' ,  (done) => {
-        chai.request(url)
-        .get('/codebreaker/1212')
+        chai.request(app)
+        .get('/api/codebreaker/1212')
         .end( function(err,res){
             //console.log("res: "+res.body)
             expect(res.body).to.have.property('resultado').to.be.equal("no se aceptan numeros repetidos");
@@ -164,8 +163,8 @@ describe('api/codebreaker ',()=>{
 describe('api/Secret', function(){
 
     it('tamaño menor' , (done) => {
-        chai.request(url)
-        .get('/codebreaker/secret/231')
+        chai.request(app)
+        .get('/api/codebreaker/secret/231')
         .end( function(err,res){
             //console.log("res: "+res.body)
             expect(res.body).to.have.property('resultado').to.be.equal("ingrese un numero de cuatro digitos");
@@ -174,8 +173,8 @@ describe('api/Secret', function(){
         });  
     });
      it('tamaño mayor' ,  (done) => {
-        chai.request(url)
-        .get('/codebreaker/secret/23145')
+        chai.request(app)
+        .get('/api/codebreaker/secret/23145')
         .end( function(err,res){
             //console.log("res: "+res.body)
             expect(res.body).to.have.property('resultado').to.be.equal("ingrese un numero de cuatro digitos");
@@ -185,8 +184,8 @@ describe('api/Secret', function(){
     });
 
     it('algun caracter no numerico' ,  (done) =>{
-        chai.request(url)
-        .get('/codebreaker/secret/2a14')
+        chai.request(app)
+        .get('/api/codebreaker/secret/2a14')
         .end( function(err,res){
             //console.log("res: "+res.body)
             expect(res.body).to.have.property('resultado').to.be.equal("algun caracter no es un numero");
@@ -196,8 +195,8 @@ describe('api/Secret', function(){
     });
 
     it('algun caracter repetido' ,  (done) =>{
-        chai.request(url)
-        .get('/codebreaker/secret/1212')
+        chai.request(app)
+        .get('/api/codebreaker/secret/1212')
         .end( function(err,res){
             //console.log("res: "+res.body)
             expect(res.body).to.have.property('resultado').to.be.equal("no se aceptan numeros repetidos");
@@ -230,6 +229,6 @@ describe('Secret', function(){
         assert.equal(res, "no se aceptan numeros repetidos"); 
     });
     
-});
+}); 
 
 
