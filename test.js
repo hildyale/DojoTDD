@@ -1,5 +1,11 @@
 const codebreaker = require('./codebreaker');
-var assert = require('chai').assert;
+let chai = require('chai');
+let assert = require('chai').assert;
+const expect = require('chai').expect;
+let chaiHttp = require('chai-http');
+
+chai.use(chaiHttp);
+const url= 'http://localhost:5000/api/';
 
 let instanceCodeBreaker = new codebreaker("1234");
 
@@ -44,3 +50,97 @@ describe('CODEBREAKER', function(){
     });
     
 });
+
+describe('api: ',()=>{
+
+	it('todos iguales', (done) => {
+		chai.request(url)
+			.get('/codebreaker/1234')
+			.end( function(err,res){
+				//console.log("res: "+res.body)
+                expect(res.body).to.have.property('resultado').to.be.equal("xxxx");
+                expect(res).to.have.status(200);                
+				done();
+			});
+    });
+    
+    it('todos distintos', (done) => {
+		chai.request(url)
+			.get('/codebreaker/5678')
+			.end( function(err,res){
+				//console.log("res: "+res.body)
+                expect(res.body).to.have.property('resultado').to.be.equal("");
+                expect(res).to.have.status(200);                
+				done();
+			});
+    });
+    
+    it('todos en desorden', (done) => {
+		chai.request(url)
+			.get('/codebreaker/2143')
+			.end( function(err,res){
+				//console.log("res: "+res.body)
+                expect(res.body).to.have.property('resultado').to.be.equal("____");
+                expect(res).to.have.status(200);                
+				done();
+			});
+    });
+    
+    it('dos iguales, dos en desorden', (done) => {
+		chai.request(url)
+			.get('/codebreaker/1243')
+			.end( function(err,res){
+				//console.log("res: "+res.body)
+                expect(res.body).to.have.property('resultado').to.be.equal("xx__");
+                expect(res).to.have.status(200);                
+				done();
+			});
+    });
+    
+    it('uno igual, tres en desorden', (done) => {
+		chai.request(url)
+			.get('/codebreaker/2314')
+			.end( function(err,res){
+				//console.log("res: "+res.body)
+                expect(res.body).to.have.property('resultado').to.be.equal("x___");
+                expect(res).to.have.status(200);                
+				done();
+			});
+    });
+    
+    it('tamaño menor' , (done) => {
+        chai.request(url)
+        .get('/codebreaker/231')
+        .end( function(err,res){
+            //console.log("res: "+res.body)
+            expect(res.body).to.have.property('resultado').to.be.equal("ingrese un numero de cuatro digitos");
+            expect(res).to.have.status(200);                
+            done();
+        });
+    });
+
+    it('tamaño mayor' , (done) => {
+        chai.request(url)
+        .get('/codebreaker/23145')
+        .end( function(err,res){
+            //console.log("res: "+res.body)
+            expect(res.body).to.have.property('resultado').to.be.equal("ingrese un numero de cuatro digitos");
+            expect(res).to.have.status(200);                
+            done();
+        }); 
+    });
+
+    it('algun caracter no numerico' , (done) => {
+        chai.request(url)
+        .get('/codebreaker/2a14')
+        .end( function(err,res){
+            //console.log("res: "+res.body)
+            expect(res.body).to.have.property('resultado').to.be.equal("algun caracter no es un numero");
+            expect(res).to.have.status(200);                
+            done();
+        }); 
+    });
+
+});
+
+
