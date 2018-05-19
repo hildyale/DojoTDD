@@ -3,6 +3,7 @@ let chai = require('chai');
 let assert = require('chai').assert;
 const expect = require('chai').expect;
 let chaiHttp = require('chai-http');
+let app = require('./main').app;
 
 chai.use(chaiHttp);
 const url= 'http://localhost:5000/api/';
