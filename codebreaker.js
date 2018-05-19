@@ -10,13 +10,27 @@ class CodeBreaker {
     let equalDigits = 0;
     let containDigits = 0;
     var reg = new RegExp('^[0-9]*$');
-   
+    let repetidos = false;
+
     if(!(this.secret.length == size)){
         return "ingrese un numero de cuatro digitos";
     }
 
     if(!reg.test(number)) {
         return "algun caracter no es un numero";
+    }
+
+    let anterior = ""
+    for(var i = 0; i <= size; i++) {
+        for(var j = i; j <= size; j++) {
+            if(i != j && number[i] == number[j]) {
+                repetidos = true;
+            }
+        }
+    }
+
+    if(repetidos){
+        return "no se aceptan numeros repetidos";
     }
 
     for(let i = 0; i < size; i++){

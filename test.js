@@ -48,6 +48,11 @@ describe('CODEBREAKER', function(){
         let res = instanceCodeBreaker.compare("2a14");
         assert.equal(res, "algun caracter no es un numero"); 
     });
+
+    it('algun caracter repetido' , function (){
+        let res = instanceCodeBreaker.compare("1212");
+        assert.equal(res, "no se aceptan numeros repetidos"); 
+    });
     
 });
 
@@ -136,6 +141,17 @@ describe('api: ',()=>{
         .end( function(err,res){
             //console.log("res: "+res.body)
             expect(res.body).to.have.property('resultado').to.be.equal("algun caracter no es un numero");
+            expect(res).to.have.status(200);                
+            done();
+        }); 
+    });
+
+    it('algun caracter repetido' ,  (done) => {
+        chai.request(url)
+        .get('/codebreaker/1212')
+        .end( function(err,res){
+            //console.log("res: "+res.body)
+            expect(res.body).to.have.property('resultado').to.be.equal("no se aceptan numeros repetidos");
             expect(res).to.have.status(200);                
             done();
         }); 
